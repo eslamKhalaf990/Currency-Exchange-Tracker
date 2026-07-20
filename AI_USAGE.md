@@ -5,3 +5,19 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
 * **Reasoning:** I only changed the app theme manually
 * **Associated Commit:** `chore: initial repository setup with feature-first structure and monochrome theme base`
+* 
+* ### Entry 2: Building currency exchange model
+* **Timestamp:** 2026-07-20 10:45
+* **Prompt:** "Here is a sample of the latest currency exchange response can you build the model currency_response_model
+* 
+  {
+  "date": "2026-07-20",
+  "egp": {
+  "1inch": 0.26893796,
+  }}"
+* Also i need to handle conversion inversion logic to show for example 1 USD = 52 EGP instead of 1 EGP = 0.911 USD).
+* 
+* **Model Output:** *I have created the CurrencyResponseModel in the lib/features/currency_exchange/data/models directory. I also created a corresponding CurrencyExchange entity in the lib/features/currency_exchange/domain/entities directory to follow the feature-first architecture mentioned in your AI_USAGE.md.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** I checked the conversion to validate if the AI handled the 1/0 edge case
+* **Associated Commit:** `feat(currency_tracker): add CurrencyResponseModel with API conversion inversion logic`
