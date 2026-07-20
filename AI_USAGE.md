@@ -37,3 +37,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Successfully implemented the repository pattern with robust offline fallback logic for all required data types.
 * **Associated Commit:** `feat(currency_tracker): implement CurrencyRepository with offline-first historical data caching`
+
+### Entry 5: Domain Use Cases and Base UseCase Class
+* **Timestamp:** 2026-07-21 12:20
+* **Prompt:** "We need to work on usecases in domain layer we need a usecase for GetExchangeRatesUseCase"
+* **Model Output:** *Created a reusable base UseCase class in the core layer and implemented GetExchangeRatesUseCase and GetHistoricalRatesUseCase in the domain layer to encapsulate repository interactions.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Established a standardized way to execute business logic, facilitating easier testing and cleaner presentation logic.
+* **Associated Commit:** `feat(currency_tracker): add domain use cases and base UseCase class`
