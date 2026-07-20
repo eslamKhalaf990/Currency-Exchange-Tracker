@@ -6,6 +6,7 @@ abstract class CurrencyRemoteDataSource {
   Future<CurrencyResponseModel> getLatestRates();
   Future<CurrencyResponseModel> getHistoricalRates(String date);
   Future<List<CurrencyResponseModel>> getTodayAndYesterdayRates();
+  Future<List<CurrencyResponseModel>> getLastSevenDaysRates();
 }
 
 class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
@@ -48,5 +49,23 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
     ]);
 
     return results;
+  }
+
+  @override
+  Future<List<CurrencyResponseModel>> getLastSevenDaysRates() async {
+    final List<Future<CurrencyResponseModel>> futures = [];
+    final today = DateTime.now();
+
+    for (int i = 0; i < 7; i++) {
+      final date = today.subtract(Duration(days: i));
+      final dateStr = date.toIso8601String().split('T')[0];
+      if (i == 0) {
+        futures.add(getLatestRates());
+      } else {
+        futures.add(getHistoricalRates(dateStr));
+      }
+    }
+
+    return await Future.wait(futures);
   }
 }
