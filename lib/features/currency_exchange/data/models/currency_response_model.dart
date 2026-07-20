@@ -6,7 +6,7 @@ class CurrencyResponseModel extends CurrencyExchange {
     required super.rates,
   });
 
-  factory CurrencyResponseModel.fromJson(Map<String, dynamic> json) {
+  factory CurrencyResponseModel.fromRemoteJson(Map<String, dynamic> json) {
     final String date = json['date'] as String? ?? '';
     final ratesMap = json['egp'] as Map<String, dynamic>? ?? {};
 
@@ -25,10 +25,17 @@ class CurrencyResponseModel extends CurrencyExchange {
     );
   }
 
+  factory CurrencyResponseModel.fromJson(Map<String, dynamic> json) {
+    return CurrencyResponseModel(
+      date: json['date'] as String,
+      rates: Map<String, double>.from(json['rates'] as Map),
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'date': date,
-      'egp': rates,
+      'rates': rates,
     };
   }
 

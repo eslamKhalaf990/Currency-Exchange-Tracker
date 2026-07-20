@@ -1,0 +1,123 @@
+{
+  "info": {
+    "_postman_id": "bb5a0596-7da4-4c88-bf4e-1a2d87664677",
+    "name": "Currency Exchange Tracker (EGP Base)",
+    "description": "API collection for the Currency Exchange Tracker assignment. Base currency is strictly EGP.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18989765",
+    "_collection_link": "https://go.postman.co/collection/18989765-bb5a0596-7da4-4c88-bf4e-1a2d87664677?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Get Latest Rates",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://latest.currency-api.pages.dev/v1/currencies/{{base_currency}}.json",
+          "protocol": "https",
+          "host": [
+            "latest",
+            "currency-api",
+            "pages",
+            "dev"
+          ],
+          "path": [
+            "v1",
+            "currencies",
+            "{{base_currency}}.json"
+          ]
+        },
+        "description": "Fetches the most recent exchange rates. Returns EGP to other currencies."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Get Yesterday's Rates (Daily Change)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://{{yesterday_date}}.currency-api.pages.dev/v1/currencies/{{base_currency}}.json",
+          "protocol": "https",
+          "host": [
+            "{{yesterday_date}}",
+            "currency-api",
+            "pages",
+            "dev"
+          ],
+          "path": [
+            "v1",
+            "currencies",
+            "{{base_currency}}.json"
+          ]
+        },
+        "description": "Fetches rates from exactly one day ago to compute the 24-hour difference."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Historical Rates (7-Day Chart Point)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://{{historical_date}}.currency-api.pages.dev/v1/currencies/{{base_currency}}.json",
+          "protocol": "https",
+          "host": [
+            "{{historical_date}}",
+            "currency-api",
+            "pages",
+            "dev"
+          ],
+          "path": [
+            "v1",
+            "currencies",
+            "{{base_currency}}.json"
+          ]
+        },
+        "description": "Fetches rates for a specific historical date to build the 7-day line chart data points."
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_currency",
+      "value": "egp",
+      "type": "string"
+    },
+    {
+      "key": "yesterday_date",
+      "value": "2026-07-19",
+      "type": "string",
+      "description": "Format must be YYYY-MM-DD for the API URL"
+    },
+    {
+      "key": "historical_date",
+      "value": "2026-07-13",
+      "type": "string",
+      "description": "Format must be YYYY-MM-DD for the API URL"
+    }
+  ]
+}

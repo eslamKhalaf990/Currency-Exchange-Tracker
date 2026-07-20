@@ -21,3 +21,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** I checked the conversion to validate if the AI handled the 1/0 edge case
 * **Associated Commit:** `feat(currency_tracker): add CurrencyResponseModel with API conversion inversion logic`
+
+### Entry 3: Network Configuration and Data Sources
+* **Timestamp:** 2026-07-20 11:15
+* **Prompt:** "We use dio for networking we need to add a base url class in core to use for apis you can find them in @Currency Exchange Tracker (EGP Base).postman_collection.json ... now we need the two api endpoints fetching today and yesterday's rates concurrently using Future.wait, and the SharedPreferences caching methods."
+* **Model Output:** *I have updated the ApiConfig class, implemented CurrencyRemoteDataSource with concurrent fetching using Future.wait, and implemented CurrencyLocalDataSource for caching with SharedPreferences.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Correctly handled the dynamic subdomains for historical data and ensured concurrent network calls as requested.
+* **Associated Commit:** `feat(currency_tracker): add ApiConfig and data sources with concurrent fetching and caching`
