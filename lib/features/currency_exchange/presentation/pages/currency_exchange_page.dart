@@ -189,7 +189,7 @@ class CurrencyExchangePage extends StatelessWidget {
                         color: Colors.red, size: 60),
                     const SizedBox(height: 16),
                     Text(
-                      'Error: ${state.message}',
+                      state.message,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 16),
                     ),
