@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/connectivity/connectivity_bloc.dart';
 import 'package:currency_exchange_tracker/core/network/dio_client.dart';
 import 'package:currency_exchange_tracker/core/network/network_info.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/data/datasources/currency_local_data_source.dart';
@@ -7,7 +8,7 @@ import 'package:currency_exchange_tracker/features/currency_exchange/domain/repo
 import 'package:currency_exchange_tracker/features/currency_exchange/domain/usecases/get_exchange_rates_usecase.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/domain/usecases/get_historical_rates_usecase.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +19,7 @@ Future<void> init() async {
   //! Features - Currency Exchange
   // Bloc
   sl.registerFactory(() => RatesListBloc(getExchangeRatesUseCase: sl()));
+  sl.registerFactory(() => ConnectivityBloc(networkInfo: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetExchangeRatesUseCase(sl()));
@@ -48,5 +50,5 @@ Future<void> init() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => Dio());
-  sl.registerLazySingleton(() => Connectivity());
+  sl.registerLazySingleton(() => InternetConnection());
 }

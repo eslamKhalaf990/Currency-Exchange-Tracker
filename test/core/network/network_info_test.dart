@@ -1,43 +1,41 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:currency_exchange_tracker/core/network/network_info.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockConnectivity extends Mock implements Connectivity {}
+class MockInternetConnection extends Mock implements InternetConnection {}
 
 void main() {
   late NetworkInfoImpl networkInfo;
-  late MockConnectivity mockConnectivity;
+  late MockInternetConnection mockInternetConnection;
 
   setUp(() {
-    mockConnectivity = MockConnectivity();
-    networkInfo = NetworkInfoImpl(mockConnectivity);
+    mockInternetConnection = MockInternetConnection();
+    networkInfo = NetworkInfoImpl(mockInternetConnection);
   });
 
   group('isConnected', () {
     test(
-      'should forward the call to Connectivity.checkConnectivity',
+      'should forward the call to InternetConnection.hasInternetAccess',
       () async {
         // arrange
-        final tConnectivityResult = [ConnectivityResult.wifi];
-        when(() => mockConnectivity.checkConnectivity())
-            .thenAnswer((_) async => tConnectivityResult);
+        when(() => mockInternetConnection.hasInternetAccess)
+            .thenAnswer((_) async => true);
 
         // act
         await networkInfo.isConnected;
 
         // assert
-        verify(() => mockConnectivity.checkConnectivity());
+        verify(() => mockInternetConnection.hasInternetAccess);
       },
     );
 
     test(
-      'should return true when the call to Connectivity.checkConnectivity contains wifi',
+      'should return true when the call to InternetConnection.hasInternetAccess is true',
       () async {
         // arrange
-        final tConnectivityResult = [ConnectivityResult.wifi];
-        when(() => mockConnectivity.checkConnectivity())
-            .thenAnswer((_) async => tConnectivityResult);
+        when(() => mockInternetConnection.hasInternetAccess)
+            .thenAnswer((_) async => true);
 
         // act
         final result = await networkInfo.isConnected;
@@ -48,28 +46,11 @@ void main() {
     );
 
     test(
-      'should return true when the call to Connectivity.checkConnectivity contains mobile',
+      'should return false when the call to InternetConnection.hasInternetAccess is false',
       () async {
         // arrange
-        final tConnectivityResult = [ConnectivityResult.mobile];
-        when(() => mockConnectivity.checkConnectivity())
-            .thenAnswer((_) async => tConnectivityResult);
-
-        // act
-        final result = await networkInfo.isConnected;
-
-        // assert
-        expect(result, true);
-      },
-    );
-
-    test(
-      'should return false when the call to Connectivity.checkConnectivity contains none',
-      () async {
-        // arrange
-        final tConnectivityResult = [ConnectivityResult.none];
-        when(() => mockConnectivity.checkConnectivity())
-            .thenAnswer((_) async => tConnectivityResult);
+        when(() => mockInternetConnection.hasInternetAccess)
+            .thenAnswer((_) async => false);
 
         // act
         final result = await networkInfo.isConnected;

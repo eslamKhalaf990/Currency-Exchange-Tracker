@@ -118,5 +118,13 @@
 * **Reasoning:** Improved UX by providing a structured visual placeholder during loading states, maintaining UI consistency.
 * **Associated Commit:** `feat(presentation): add HomeLoader skeleton and replace progress indicator`
 
----
 ## Module 1: Core Architecture and Basic Exchange Rates - COMPLETED
+---
+
+### Entry 15: Real-time Connectivity Monitoring and UI Integration
+* **Timestamp:** 2026-07-22 12:35
+* **Prompt:** "We need a ConnectivityBloc to handle real-time internet status changes. Update NetworkInfo to provide a connectivity stream. Show an 'Offline Mode' banner in the UI when disconnected and automatically refresh the data when the connection is restored."
+* **Model Output:** *Implemented ConnectivityBloc, ConnectivityEvent, and ConnectivityState. Updated NetworkInfo to use internet_connection_checker_plus's stream. Integrated the bloc into main.dart via MultiBlocProvider and updated CurrencyExchangePage to display an offline banner and trigger a refresh on reconnection.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Effectively implemented real-time connectivity tracking and integrated it into the UI flow, improving the app's responsiveness to network changes.
+* **Associated Commit:** `feat(core): implement ConnectivityBloc for real-time status and UI integration`

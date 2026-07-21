@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/connectivity/connectivity_bloc.dart';
 import 'package:currency_exchange_tracker/core/util/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +16,38 @@ class CurrencyExchangePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Currency Exchange Tracker'),
       ),
-      body: BlocBuilder<RatesListBloc, RatesListState>(
-        builder: (context, state) {
+      body: BlocListener<ConnectivityBloc, ConnectivityState>(
+        listenWhen: (previous, current) =>
+            previous is ConnectivityOffline && current is ConnectivityOnline,
+        listener: (context, state) {
+          // context.read<RatesListBloc>().add(GetRatesListEvent());
+        },
+        child: Column(
+          children: [
+            BlocBuilder<ConnectivityBloc, ConnectivityState>(
+              builder: (context, state) {
+                if (state is ConnectivityOffline) {
+                  return Container(
+                    width: double.infinity,
+                    color: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: const Text(
+                      'Offline Mode',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+            Expanded(
+              child: BlocBuilder<RatesListBloc, RatesListState>(
+                builder: (context, state) {
           if (state is RatesListInitial) {
             context.read<RatesListBloc>().add(GetRatesListEvent());
             return const Center(child: Text('Initializing...'));
@@ -210,6 +241,10 @@ class CurrencyExchangePage extends StatelessWidget {
           return const SizedBox.shrink();
         },
       ),
-    );
+    ),
+  ],
+),
+),
+);
   }
 }

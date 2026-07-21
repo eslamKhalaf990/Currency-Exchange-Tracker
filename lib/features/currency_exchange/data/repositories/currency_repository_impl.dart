@@ -20,13 +20,19 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
 
   @override
   Future<Either<Failure, List<CurrencyExchange>>> getTodayAndYesterdayRates() async {
-    if (await networkInfo.isConnected) {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
       try {
         final remoteRates = await remoteDataSource.getTodayAndYesterdayRates();
         await localDataSource.cacheCurrencyRates(remoteRates);
         return Right(remoteRates);
-      } on ServerException catch (e) {
-        return const Left(ServerFailure("We're having trouble reaching the server. No saved data is available at the moment."));
+      } on ServerException {
+        try {
+          final localRates = await localDataSource.getLastCurrencyRates();
+          return Right(localRates);
+        } on CacheException {
+          return const Left(ServerFailure("We're having trouble reaching the server, and no saved data is available at the moment."));
+        }
       } catch (e) {
         return const Left(ServerFailure("Oops! Something went wrong on our end. Please try again in a bit."));
       }
@@ -42,13 +48,19 @@ class CurrencyRepositoryImpl implements CurrencyRepository {
 
   @override
   Future<Either<Failure, List<CurrencyExchange>>> getLastSevenDaysRates() async {
-    if (await networkInfo.isConnected) {
+    final isConnected = await networkInfo.isConnected;
+    if (isConnected) {
       try {
         final remoteRates = await remoteDataSource.getLastSevenDaysRates();
         await localDataSource.cacheHistoricalRates(remoteRates);
         return Right(remoteRates);
-      } on ServerException catch (e) {
-        return const Left(ServerFailure("The server is taking a little too long to respond. No saved history was found."));
+      } on ServerException {
+        try {
+          final localRates = await localDataSource.getLastHistoricalRates();
+          return Right(localRates);
+        } on CacheException {
+          return const Left(ServerFailure("The server is taking a little too long to respond, and no saved history was found."));
+        }
       } catch (e) {
         return const Left(ServerFailure("We hit a snag loading the history. Let's try that again."));
       }

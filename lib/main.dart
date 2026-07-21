@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/connectivity/connectivity_bloc.dart';
 import 'package:currency_exchange_tracker/core/di/di.dart' as di;
 import 'package:currency_exchange_tracker/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,15 @@ class MyApp extends StatelessWidget {
       title: 'Currency Exchange Tracker',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: BlocProvider(
-        create: (context) => di.sl<RatesListBloc>(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => di.sl<RatesListBloc>(),
+          ),
+          BlocProvider(
+            create: (context) => di.sl<ConnectivityBloc>(),
+          ),
+        ],
         child: const CurrencyExchangePage(),
       ),
     );

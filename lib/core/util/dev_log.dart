@@ -8,6 +8,10 @@ class DevLog {
     }
   }
 
+  static void log(dynamic log) {
+    developer.log('LOG: $log', name: 'DEV_LOG');
+  }
+
   static void logResponse(String url, String body) {
     developer.log('API RESPONSE: $url', name: 'DEV_LOG');
     developer.log('Body: $body', name: 'DEV_LOG');
