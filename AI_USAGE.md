@@ -109,3 +109,14 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
 * **Reasoning:** I corrected the repository tests to use `CurrencyResponseModel` for the data source mocks instead of the `CurrencyExchange` entity, ensuring type consistency with the actual data source implementation.
 * **Associated Commit:** `feat(core): add NetworkInfo and update repository with connection-aware logic and tests`
+
+### Entry 14: Skeleton Loader Implementation and Refactoring
+* **Timestamp:** 2026-07-21 19:25
+* **Prompt:** "i want a simple skeleton to act as shimmer using only containers to put instead of circular progress indicator ... well refactor into /widgets/ to be Home loader"
+* **Model Output:** *Implemented a custom skeleton loader using Container widgets to replace the CircularProgressIndicator. Refactored the loader into a reusable HomeLoader widget in the presentation layer.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Improved UX by providing a structured visual placeholder during loading states, maintaining UI consistency.
+* **Associated Commit:** `feat(presentation): add HomeLoader skeleton and replace progress indicator`
+
+---
+## Module 1: Core Architecture and Basic Exchange Rates - COMPLETED

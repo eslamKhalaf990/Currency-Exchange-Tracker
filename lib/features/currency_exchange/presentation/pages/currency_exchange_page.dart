@@ -2,6 +2,7 @@ import 'package:currency_exchange_tracker/core/util/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
+import 'package:currency_exchange_tracker/features/currency_exchange/presentation/widgets/home_loader.dart';
 
 class CurrencyExchangePage extends StatelessWidget {
   const CurrencyExchangePage({super.key});
@@ -20,7 +21,7 @@ class CurrencyExchangePage extends StatelessWidget {
             context.read<RatesListBloc>().add(GetRatesListEvent());
             return const Center(child: Text('Initializing...'));
           } else if (state is RatesListLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const HomeLoader();
           } else if (state is RatesListLoaded) {
             if (state.rates.isEmpty) {
               return const Center(child: Text('No rates found.'));
