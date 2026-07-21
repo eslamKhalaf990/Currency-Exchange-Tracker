@@ -1,20 +1,10 @@
+import 'package:currency_exchange_tracker/core/util/date_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
 
 class CurrencyExchangePage extends StatelessWidget {
   const CurrencyExchangePage({super.key});
-
-  /// Formats date from yyyy-mm-dd to dd mm yyyy strictly
-  String _formatDate(String dateStr) {
-    try {
-      final parts = dateStr.split('-');
-      if (parts.length == 3) {
-        return '${parts[2]} ${parts[1]} ${parts[0]}';
-      }
-    } catch (_) {}
-    return dateStr;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +13,6 @@ class CurrencyExchangePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Currency Exchange Tracker'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        centerTitle: true,
       ),
       body: BlocBuilder<RatesListBloc, RatesListState>(
         builder: (context, state) {
@@ -54,7 +42,7 @@ class CurrencyExchangePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Egyptian Pound (EGP) Rates',
+                          'Egyptian Pound Rates',
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -62,7 +50,7 @@ class CurrencyExchangePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'As of ${_formatDate(today.date)}',
+                          'Last Updated At ${DateFormatter.formatString(today.date)}',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[700],
@@ -94,15 +82,14 @@ class CurrencyExchangePage extends StatelessWidget {
 
                     return Card(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                          horizontal: 0, vertical: 8),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
                         side: BorderSide(color: Colors.grey.shade200),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
+                            horizontal: 15, vertical: 15),
                         child: Row(
                           children: [
                             CircleAvatar(
@@ -174,12 +161,12 @@ class CurrencyExchangePage extends StatelessWidget {
                         ),
                       ),
                     );
-                  }).toList(),
+                  }),
                   if (yesterday != null)
                     Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Text(
-                        'Comparison based on rates from ${_formatDate(yesterday.date)}',
+                        'Comparison based on rates from ${DateFormatter.formatString(yesterday.date)}',
                         style: TextStyle(
                           color: Colors.grey[500],
                           fontSize: 12,

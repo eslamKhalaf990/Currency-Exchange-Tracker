@@ -85,3 +85,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Correctly implemented the requested UI enhancements, filtering, and business logic for rate change visualization while maintaining strict date formatting.
 * **Associated Commit:** `feat(presentation): finalize UI with filtering, rate change calculations, and strict formatting`
+
+### Entry 11: Core Refactoring - Theme and Utilities
+* **Timestamp:** 2026-07-21 15:59
+* **Prompt:** "refactor the theme into core and refactor date format to core and use intl"
+* **Model Output:** *Refactored the theme into lib/core/theme/app_theme.dart and created lib/core/util/date_formatter.dart using the intl package. Updated the UI and main.dart to use these centralized core utilities.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
+* **Reasoning:** I customized the theme to a minimalist black/white style with the 'Outfit' font and updated the date format to 'EEEE, dd MMM yy' for better readability, and refined the UI layout.
+* **Associated Commit:** `refactor(core): centralize minimalist theme and date formatting utilities`

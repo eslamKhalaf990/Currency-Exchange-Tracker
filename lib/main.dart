@@ -1,4 +1,5 @@
 import 'package:currency_exchange_tracker/core/di/di.dart' as di;
+import 'package:currency_exchange_tracker/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
@@ -18,10 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Currency Exchange Tracker',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF07CCA7)),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
       home: BlocProvider(
         create: (context) => di.sl<RatesListBloc>(),
         child: const CurrencyExchangePage(),
