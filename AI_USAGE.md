@@ -45,3 +45,27 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Established a standardized way to execute business logic, facilitating easier testing and cleaner presentation logic.
 * **Associated Commit:** `feat(currency_tracker): add domain use cases and base UseCase class`
+
+### Entry 6: Bloc Implementation for Rates List
+* **Timestamp:** 2026-07-21 03:17
+* **Prompt:** "we need to work on currency exchange bloc we need RatesListBloc with explicit states: RatesListLoading, RatesListLoaded, and RatesListError"
+* **Model Output:** *Implemented RatesListBloc, RatesListEvent, and RatesListState using flutter_bloc and equatable. Added necessary dependencies to pubspec.yaml and integrated GetExchangeRatesUseCase for data fetching.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
+* **Reasoning:** Updated flutter_bloc & equatable versions in .yaml Correctly implemented the Bloc pattern with requested explicit states, providing a clean interface for the UI to handle loading, success, and error scenarios.
+* **Associated Commit:** `feat(currency_tracker): implement RatesListBloc with explicit states for currency exchange list`
+
+### Entry 7: Dependency Injection Setup
+* **Timestamp:** 2026-07-21 03:17
+* **Prompt:** "we need a di.dart for dependency injection in core"
+* **Model Output:** *Added get_it to pubspec.yaml, implemented lib/core/di/di.dart for centralizing dependency management, and updated main.dart to initialize the service locator before running the app.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Established a clean service locator pattern using GetIt, decoupling component creation from usage and facilitating better testability.
+* **Associated Commit:** `feat(currency_tracker): add dependency injection using get_it`
+
+### Entry 8: DevLog Utility and Networking Enhancement
+* **Timestamp:** 2026-07-21 03:17
+* **Prompt:** "we need a DevLog file to only log API requests, responses and local fetches ... we need a little enhancement for networking so we don't repeat ourselves in any get and the timeout should be 30 seconds"
+* **Model Output:** *Created DevLog utility for structured logging of API and local storage operations. Enhanced the networking layer by introducing DioClient and LoggingInterceptor, centralizing the 30-second timeout configuration and automating network logs. Refactored data sources to utilize the new DioClient and DevLog.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Centralizing logging through interceptors and networking config in a DioClient significantly reduced boilerplate in data sources and improved debugging capabilities.
+* **Associated Commit:** `feat(core): add DevLog and enhance networking with DioClient and interceptors`

@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:currency_exchange_tracker/core/api/api_config.dart';
+import 'package:currency_exchange_tracker/core/network/dio_client.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/data/models/currency_response_model.dart';
 
 abstract class CurrencyRemoteDataSource {
@@ -10,13 +10,13 @@ abstract class CurrencyRemoteDataSource {
 }
 
 class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
-  final Dio dio;
+  final DioClient dioClient;
 
-  CurrencyRemoteDataSourceImpl({required this.dio});
+  CurrencyRemoteDataSourceImpl({required this.dioClient});
 
   @override
   Future<CurrencyResponseModel> getLatestRates() async {
-    final response = await dio.get(ApiConfig.latestEgpUrl);
+    final response = await dioClient.get(ApiConfig.latestEgpUrl);
     if (response.statusCode == 200) {
       return CurrencyResponseModel.fromRemoteJson(response.data);
     } else {
@@ -27,7 +27,7 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
   @override
   Future<CurrencyResponseModel> getHistoricalRates(String date) async {
     final url = '${ApiConfig.baseUrlHistorical(date)}${ApiConfig.currenciesPath}';
-    final response = await dio.get(url);
+    final response = await dioClient.get(url);
     if (response.statusCode == 200) {
       return CurrencyResponseModel.fromRemoteJson(response.data);
     } else {
