@@ -38,7 +38,7 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
 
   @override
   Future<List<CurrencyResponseModel>> getTodayAndYesterdayRates() async {
-    final today = DateTime.now();
+    final today = DateTime.now().toUtc();
     final yesterday = today.subtract(const Duration(days: 1));
     
     final yesterdayDateStr = yesterday.toIso8601String().split('T')[0];
@@ -55,7 +55,7 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
   @override
   Future<List<CurrencyResponseModel>> getLastSevenDaysRates() async {
     final List<Future<CurrencyResponseModel>> futures = [];
-    final today = DateTime.now();
+    final today = DateTime.now().toUtc();
 
     for (int i = 0; i < 7; i++) {
       final date = today.subtract(Duration(days: i));
