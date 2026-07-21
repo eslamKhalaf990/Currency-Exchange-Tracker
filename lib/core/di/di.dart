@@ -7,6 +7,7 @@ import 'package:currency_exchange_tracker/features/currency_exchange/data/reposi
 import 'package:currency_exchange_tracker/features/currency_exchange/domain/repositories/currency_repository.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/domain/usecases/get_exchange_rates_usecase.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/domain/usecases/get_historical_rates_usecase.dart';
+import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/currency_detail_bloc.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:dio/dio.dart';
@@ -20,6 +21,7 @@ Future<void> init() async {
   // Bloc
   sl.registerFactory(() => RatesListBloc(getExchangeRatesUseCase: sl()));
   sl.registerFactory(() => ConnectivityBloc(networkInfo: sl()));
+  sl.registerFactory(() => CurrencyDetailBloc(getHistoricalRatesUseCase: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetExchangeRatesUseCase(sl()));

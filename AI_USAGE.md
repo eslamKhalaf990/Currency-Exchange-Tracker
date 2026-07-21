@@ -128,3 +128,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Effectively implemented real-time connectivity tracking and integrated it into the UI flow, improving the app's responsiveness to network changes.
 * **Associated Commit:** `feat(core): implement ConnectivityBloc for real-time status and UI integration`
+
+### Entry 16: Navigation to Currency Detail Screen
+* **Timestamp:** 2026-07-22 14:10
+* **Prompt:** "now when click on currency it should navigate to a new screen currency_detail_screen.dart"
+* **Model Output:** *Implemented CurrencyDetailBloc and CurrencyDetailScreen with a 7-day historical trend chart using fl_chart. Added navigation from the main currency list to the detail view and registered the new bloc in the dependency injection container.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Successfully implemented the requested navigation and detailed historical view, including data visualization and bloc integration.
+* **Associated Commit:** `feat(presentation): implement navigation to currency detail screen with historical chart`

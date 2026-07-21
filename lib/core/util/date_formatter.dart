@@ -9,4 +9,13 @@ class DateFormatter {
       return dateStr;
     }
   }
+
+  static String formatChartDate(String dateStr) {
+    try {
+      final DateTime dateTime = DateTime.parse(dateStr);
+      return DateFormat('dd').format(dateTime);
+    } catch (_) {
+      return dateStr;
+    }
+  }
 }
