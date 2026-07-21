@@ -5,12 +5,26 @@ import 'package:currency_exchange_tracker/features/currency_exchange/presentatio
 class CurrencyExchangePage extends StatelessWidget {
   const CurrencyExchangePage({super.key});
 
+  /// Formats date from yyyy-mm-dd to dd mm yyyy strictly
+  String _formatDate(String dateStr) {
+    try {
+      final parts = dateStr.split('-');
+      if (parts.length == 3) {
+        return '${parts[2]} ${parts[1]} ${parts[0]}';
+      }
+    } catch (_) {}
+    return dateStr;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<String> allowedCurrencies = ['usd', 'eur', 'gbp', 'sar', 'jpy'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Currency Exchange Tracker'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        centerTitle: true,
       ),
       body: BlocBuilder<RatesListBloc, RatesListState>(
         builder: (context, state) {
@@ -23,31 +37,158 @@ class CurrencyExchangePage extends StatelessWidget {
             if (state.rates.isEmpty) {
               return const Center(child: Text('No rates found.'));
             }
+
+            // Assume index 0 is today and index 1 is yesterday as per RemoteDataSource
+            final today = state.rates[0];
+            final yesterday = state.rates.length > 1 ? state.rates[1] : null;
+
             return RefreshIndicator(
-              onRefresh: () async => context.read<RatesListBloc>().add(GetRatesListEvent()),
-              child: ListView.builder(
-                itemCount: state.rates.length,
-                itemBuilder: (context, index) {
-                  final currencyExchange = state.rates[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    child: ExpansionTile(
-                      title: Text(
-                        'Rates for ${currencyExchange.date}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      children: currencyExchange.rates.entries.map((entry) {
-                        return ListTile(
-                          title: Text(entry.key.toUpperCase()),
-                          trailing: Text(
-                            '1 ${entry.key.toUpperCase()} = ${entry.value.toStringAsFixed(2)} EGP',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
+              onRefresh: () async =>
+                  context.read<RatesListBloc>().add(GetRatesListEvent()),
+              child: ListView(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Egyptian Pound (EGP) Rates',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'As of ${_formatDate(today.date)}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                  ...allowedCurrencies.map((code) {
+                    final rateToday = today.rates[code] ?? 0.0;
+                    final rateYesterday = yesterday?.rates[code] ?? rateToday;
+
+                    final absChange = rateToday - rateYesterday;
+                    final pctChange = rateYesterday != 0
+                        ? (absChange / rateYesterday) * 100
+                        : 0.0;
+
+                    // Color: Green if rate decreased (EGP improved), Red if rate increased (EGP weakened)
+                    final Color changeColor = absChange > 0
+                        ? Colors.red
+                        : (absChange < 0 ? Colors.green : Colors.grey);
+
+                    final IconData changeIcon = absChange > 0
+                        ? Icons.trending_up
+                        : (absChange < 0
+                            ? Icons.trending_down
+                            : Icons.trending_flat);
+
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: BorderSide(color: Colors.grey.shade200),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primaryContainer,
+                              child: Text(
+                                code[0].toUpperCase(),
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    code.toUpperCase(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  if (yesterday != null)
+                                    Text(
+                                      'Was ${rateYesterday.toStringAsFixed(2)} EGP',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${rateToday.toStringAsFixed(2)} EGP',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(changeIcon,
+                                        color: changeColor, size: 14),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      '${absChange.abs().toStringAsFixed(2)} (${pctChange.abs().toStringAsFixed(2)}%)',
+                                      style: TextStyle(
+                                        color: changeColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  if (yesterday != null)
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Text(
+                        'Comparison based on rates from ${_formatDate(yesterday.date)}',
+                        style: TextStyle(
+                          color: Colors.grey[500],
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
               ),
             );
           } else if (state is RatesListError) {
@@ -57,7 +198,8 @@ class CurrencyExchangePage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, color: Colors.red, size: 60),
+                    const Icon(Icons.error_outline,
+                        color: Colors.red, size: 60),
                     const SizedBox(height: 16),
                     Text(
                       'Error: ${state.message}',

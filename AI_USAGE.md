@@ -77,3 +77,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Successfully integrated all layers of the architecture (Data, Domain, Presentation) into a functional UI, providing a clear way to verify the end-to-end flow.
 * **Associated Commit:** `feat(presentation): implement CurrencyExchangePage and integrate with Bloc`
+
+### Entry 10: UI Refinement and Rate Change Logic
+* **Timestamp:** 2026-07-21 03:32
+* **Prompt:** "Refactor currency_exchange_page.dart to finalize the UI. Filter the data to only display USD, EUR, GBP, SAR, and JPY. Calculate the daily absolute and percentage change between today and yesterday. Color the change text Green if the rate decreased, and Red if the rate increased. Format all dates in the UI strictly as dd mm yyyy."
+* **Model Output:** *Refactored CurrencyExchangePage to include specific currency filtering (USD, EUR, GBP, SAR, JPY), daily change calculations (absolute and percentage), conditional color coding (Green for decrease, Red for increase), and strict date formatting (dd mm yyyy).*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Correctly implemented the requested UI enhancements, filtering, and business logic for rate change visualization while maintaining strict date formatting.
+* **Associated Commit:** `feat(presentation): finalize UI with filtering, rate change calculations, and strict formatting`
