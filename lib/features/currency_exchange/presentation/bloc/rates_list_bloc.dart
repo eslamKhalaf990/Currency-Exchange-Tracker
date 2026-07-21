@@ -19,11 +19,10 @@ class RatesListBloc extends Bloc<RatesListEvent, RatesListState> {
     Emitter<RatesListState> emit,
   ) async {
     emit(RatesListLoading());
-    try {
-      final rates = await getExchangeRatesUseCase(NoParams());
-      emit(RatesListLoaded(rates));
-    } catch (e) {
-      emit(RatesListError(e.toString()));
-    }
+    final failureOrRates = await getExchangeRatesUseCase(NoParams());
+    failureOrRates.fold(
+      (failure) => emit(RatesListError(failure.message)),
+      (rates) => emit(RatesListLoaded(rates)),
+    );
   }
 }

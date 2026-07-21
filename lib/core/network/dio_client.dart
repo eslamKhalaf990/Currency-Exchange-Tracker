@@ -1,3 +1,4 @@
+import 'package:currency_exchange_tracker/core/error/exceptions.dart';
 import 'package:dio/dio.dart';
 import 'logging_interceptor.dart';
 
@@ -28,10 +29,18 @@ class DioClient {
         onReceiveProgress: onReceiveProgress,
       );
       return response;
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.connectionError) {
+        throw NetworkException('No internet connection. Please check your network and try again.');
+      } else if (e.type == DioExceptionType.badResponse) {
+        throw ServerException('Server error: ${e.response?.statusCode}. Please try again later.');
+      } else {
+        throw ServerException('Something went wrong. Please try again.');
+      }
     } catch (e) {
-      rethrow;
+      throw ServerException('An unexpected error occurred.');
     }
   }
-
-  // Add other methods like post, put, delete if needed
 }

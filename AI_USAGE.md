@@ -87,9 +87,17 @@
 * **Associated Commit:** `feat(presentation): finalize UI with filtering, rate change calculations, and strict formatting`
 
 ### Entry 11: Core Refactoring - Theme and Utilities
-* **Timestamp:** 2026-07-21 15:59
+* **Timestamp:** 2026-07-21 14:59
 * **Prompt:** "refactor the theme into core and refactor date format to core and use intl"
 * **Model Output:** *Refactored the theme into lib/core/theme/app_theme.dart and created lib/core/util/date_formatter.dart using the intl package. Updated the UI and main.dart to use these centralized core utilities.*
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
 * **Reasoning:** I customized the theme to a minimalist black/white style with the 'Outfit' font and updated the date format to 'EEEE, dd MMM yy' for better readability, and refined the UI layout.
 * **Associated Commit:** `refactor(core): centralize minimalist theme and date formatting utilities`
+
+### Entry 12: Functional Error Handling and Custom Exceptions
+* **Timestamp:** 2026-07-21 15:22
+* **Prompt:** "now we need to work on Exption handling we need ServerException, NetwrokException, CacheException ... now i added dartz to .yaml we need to use it handle these errors in bloc layer ... now we need to enhance the error message to fit the app like if no fetched data return a suitable message"
+* **Model Output:** *Implemented custom Exception and Failure classes. Integrated dartz for functional error handling (Either<Failure, T>) across the domain, data, and presentation layers. Refined the repository to provide user-friendly error messages and graceful offline fallbacks.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Established a robust and predictable error handling mechanism using functional programming principles, ensuring the UI receives specific, user-friendly failure descriptions.
+* **Associated Commit:** `feat(core): implement functional error handling with dartz and custom exceptions`

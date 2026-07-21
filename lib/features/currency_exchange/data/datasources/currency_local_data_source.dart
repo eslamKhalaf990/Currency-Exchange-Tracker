@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:currency_exchange_tracker/core/error/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:currency_exchange_tracker/core/util/dev_log.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/data/models/currency_response_model.dart';
@@ -34,7 +35,7 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
           .map((item) => CurrencyResponseModel.fromJson(jsonDecode(item)))
           .toList());
     } else {
-      throw Exception('No cached rates found');
+      throw CacheException('No cached rates found');
     }
   }
 
@@ -54,7 +55,7 @@ class CurrencyLocalDataSourceImpl implements CurrencyLocalDataSource {
           .map((item) => CurrencyResponseModel.fromJson(jsonDecode(item)))
           .toList());
     } else {
-      throw Exception('No cached historical rates found');
+      throw CacheException('No cached historical rates found');
     }
   }
 }

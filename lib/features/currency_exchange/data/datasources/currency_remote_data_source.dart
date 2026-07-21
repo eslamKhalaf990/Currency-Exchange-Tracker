@@ -1,4 +1,5 @@
 import 'package:currency_exchange_tracker/core/api/api_config.dart';
+import 'package:currency_exchange_tracker/core/error/exceptions.dart';
 import 'package:currency_exchange_tracker/core/network/dio_client.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/data/models/currency_response_model.dart';
 
@@ -20,7 +21,7 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
     if (response.statusCode == 200) {
       return CurrencyResponseModel.fromRemoteJson(response.data);
     } else {
-      throw Exception('Failed to load latest rates');
+      throw ServerException('Failed to load latest rates');
     }
   }
 
@@ -31,7 +32,7 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
     if (response.statusCode == 200) {
       return CurrencyResponseModel.fromRemoteJson(response.data);
     } else {
-      throw Exception('Failed to load rates for $date');
+      throw ServerException('Failed to load rates for $date');
     }
   }
 
