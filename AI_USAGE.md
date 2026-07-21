@@ -101,3 +101,11 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Established a robust and predictable error handling mechanism using functional programming principles, ensuring the UI receives specific, user-friendly failure descriptions.
 * **Associated Commit:** `feat(core): implement functional error handling with dartz and custom exceptions`
+
+### Entry 13: Network Info and Connection-Aware Repository
+* **Timestamp:** 2026-07-21 19:16
+* **Prompt:** "we need network info to check internet connection to decide wheth calling the remote data source or local i added connectivity_plus to yaml ... now we need a test cases to test if netwrok is connected or not"
+* **Model Output:** *Implemented NetworkInfo utility using connectivity_plus and integrated it into CurrencyRepositoryImpl to handle offline-first logic. Created unit tests for NetworkInfo and integration tests for CurrencyRepositoryImpl.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Edited**.
+* **Reasoning:** I corrected the repository tests to use `CurrencyResponseModel` for the data source mocks instead of the `CurrencyExchange` entity, ensuring type consistency with the actual data source implementation.
+* **Associated Commit:** `feat(core): add NetworkInfo and update repository with connection-aware logic and tests`
