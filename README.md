@@ -62,7 +62,7 @@ To ensure consistency, the project was developed using the following environment
 ### Installation & Setup
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/currency_exchange_tracker.git
+   git clone https://github.com/eslamKhalaf990/Currency-Exchange-Tracker.git
    cd currency_exchange_tracker
    ```
 
