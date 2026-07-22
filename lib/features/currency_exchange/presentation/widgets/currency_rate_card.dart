@@ -6,6 +6,14 @@ class CurrencyRateCard extends StatelessWidget {
   final double rateToday;
   final double? rateYesterday;
 
+  static const Map<String, String> _currencyNames = {
+    'usd': 'US Dollar',
+    'eur': 'Euro',
+    'gbp': 'British Pound',
+    'sar': 'Saudi Riyal',
+    'jpy': 'Japanese Yen',
+  };
+
   const CurrencyRateCard({
     super.key,
     required this.code,
@@ -19,6 +27,7 @@ class CurrencyRateCard extends StatelessWidget {
     final absChange = rateToday - yesterdayValue;
     final pctChange = yesterdayValue != 0 ? (absChange / yesterdayValue) * 100 : 0.0;
 
+    // Red if EGP weakens (rate in EGP increases), Green if EGP strengthens (rate in EGP decreases)
     final Color changeColor = absChange > 0
         ? Colors.red
         : (absChange < 0 ? Colors.green : Colors.grey);
@@ -26,6 +35,8 @@ class CurrencyRateCard extends StatelessWidget {
     final IconData changeIcon = absChange > 0
         ? Icons.trending_up
         : (absChange < 0 ? Icons.trending_down : Icons.trending_flat);
+
+    final currencyName = _currencyNames[code.toLowerCase()] ?? code.toUpperCase();
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -64,34 +75,26 @@ class CurrencyRateCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      code.toUpperCase(),
+                      currencyName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
-                    if (rateYesterday != null)
-                      Text(
-                        'Was ${rateYesterday!.toStringAsFixed(2)} EGP',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 12,
-                        ),
+                    Text(
+                      '1 ${code.toUpperCase()} = ${rateToday.toStringAsFixed(2)} EGP',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
+                    ),
                   ],
                 ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    '${rateToday.toStringAsFixed(2)} EGP',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -101,12 +104,20 @@ class CurrencyRateCard extends StatelessWidget {
                         '${absChange.abs().toStringAsFixed(2)} (${pctChange.abs().toStringAsFixed(2)}%)',
                         style: TextStyle(
                           color: changeColor,
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
+                  if (rateYesterday != null)
+                    Text(
+                      'Was ${rateYesterday!.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: 12,
+                      ),
+                    ),
                 ],
               ),
             ],
