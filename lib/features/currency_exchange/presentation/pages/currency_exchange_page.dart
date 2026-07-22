@@ -1,6 +1,8 @@
-import 'package:currency_exchange_tracker/features/currency_exchange/presentation/pages/currency_detail_screen.dart';
 import 'package:currency_exchange_tracker/core/connectivity/connectivity_bloc.dart';
 import 'package:currency_exchange_tracker/core/util/date_formatter.dart';
+import 'package:currency_exchange_tracker/features/currency_exchange/presentation/widgets/currency_rate_card.dart';
+import 'package:currency_exchange_tracker/features/currency_exchange/presentation/widgets/offline_mode_banner.dart';
+import 'package:currency_exchange_tracker/features/currency_exchange/presentation/widgets/rates_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:currency_exchange_tracker/features/currency_exchange/presentation/bloc/rates_list_bloc.dart';
@@ -20,28 +22,13 @@ class CurrencyExchangePage extends StatelessWidget {
       body: BlocListener<ConnectivityBloc, ConnectivityState>(
         listenWhen: (previous, current) =>
             previous is ConnectivityOffline && current is ConnectivityOnline,
-        listener: (context, state) {
-          // context.read<RatesListBloc>().add(GetRatesListEvent());
-        },
+        listener: (context, state) {},
         child: Column(
           children: [
             BlocBuilder<ConnectivityBloc, ConnectivityState>(
               builder: (context, state) {
                 if (state is ConnectivityOffline) {
-                  return Container(
-                    width: double.infinity,
-                    color: Theme.of(context).colorScheme.primary,
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: const Text(
-                      'Offline Mode',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
+                  return const OfflineModeBanner();
                 }
                 return const SizedBox.shrink();
               },
@@ -95,121 +82,12 @@ class CurrencyExchangePage extends StatelessWidget {
                           ),
                           ...allowedCurrencies.map((code) {
                             final rateToday = today.rates[code] ?? 0.0;
-                            final rateYesterday =
-                                yesterday?.rates[code] ?? rateToday;
+                            final rateYesterday = yesterday?.rates[code];
 
-                            final absChange = rateToday - rateYesterday;
-                            final pctChange = rateYesterday != 0
-                                ? (absChange / rateYesterday) * 100
-                                : 0.0;
-
-                            // Color: Green if rate decreased (EGP improved), Red if rate increased (EGP weakened)
-                            final Color changeColor = absChange > 0
-                                ? Colors.red
-                                : (absChange < 0 ? Colors.green : Colors.grey);
-
-                            final IconData changeIcon = absChange > 0
-                                ? Icons.trending_up
-                                : (absChange < 0
-                                    ? Icons.trending_down
-                                    : Icons.trending_flat);
-
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 8),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(color: Colors.grey.shade200),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          CurrencyDetailScreen(
-                                        currencyCode: code,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 15),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .primaryContainer,
-                                        child: Text(
-                                          code[0].toUpperCase(),
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimaryContainer,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              code.toUpperCase(),
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            if (yesterday != null)
-                                              Text(
-                                                'Was ${rateYesterday.toStringAsFixed(2)} EGP',
-                                                style: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            '${rateToday.toStringAsFixed(2)} EGP',
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(changeIcon,
-                                                  color: changeColor, size: 14),
-                                              const SizedBox(width: 2),
-                                              Text(
-                                                '${absChange.abs().toStringAsFixed(2)} (${pctChange.abs().toStringAsFixed(2)}%)',
-                                                style: TextStyle(
-                                                  color: changeColor,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                            return CurrencyRateCard(
+                              code: code,
+                              rateToday: rateToday,
+                              rateYesterday: rateYesterday,
                             );
                           }),
                           if (yesterday != null)
@@ -229,34 +107,7 @@ class CurrencyExchangePage extends StatelessWidget {
                       ),
                     );
                   } else if (state is RatesListError) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.error_outline,
-                                color: Colors.red, size: 60),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.message,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            const SizedBox(height: 24),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                context
-                                    .read<RatesListBloc>()
-                                    .add(GetRatesListEvent());
-                              },
-                              icon: const Icon(Icons.refresh),
-                              label: const Text('Retry'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                    return RatesErrorWidget(message: state.message);
                   }
                   return const SizedBox.shrink();
                 },

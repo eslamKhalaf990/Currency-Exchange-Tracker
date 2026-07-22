@@ -121,6 +121,9 @@
 ## Module 1: Core Architecture and Basic Exchange Rates - COMPLETED
 ---
 
+## Module 2: Connectivity & Detailed Analytics - IN PROGRESS
+---
+
 ### Entry 15: Real-time Connectivity Monitoring and UI Integration
 * **Timestamp:** 2026-07-22 12:35
 * **Prompt:** "We need a ConnectivityBloc to handle real-time internet status changes. Update NetworkInfo to provide a connectivity stream. Show an 'Offline Mode' banner in the UI when disconnected and automatically refresh the data when the connection is restored."
@@ -136,3 +139,20 @@
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Successfully implemented the requested navigation and detailed historical view, including data visualization and bloc integration.
 * **Associated Commit:** `feat(presentation): implement navigation to currency detail screen with historical chart`
+
+### Entry 17: Implementing Curved Chart Shimmer Skeleton
+* **Timestamp:** 22 07 2026 03:48
+* **Prompt:** "i want a LineChartBarData skeleton and should be iscurved also to act as a shimmer"
+* **Model Output:** *Implemented a CurrencyHistoryChartSkeleton widget by wrapping a standard LineChart (populated with dummy FlSpot coordinates and isCurved: true) inside a Shimmer.fromColors widget to act as a seamless animated mask*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:**  Reusing the FlChart configuration with dummy data rather than building a custom painter ensures exact layout and pixel parity with the final data chart, preventing layout jumps and offloading the animation complexity entirely to the shimmer package.
+* **Associated Commit:** `feat(presentation): implement animated curved LineChart skeleton for currency history`
+
+### Entry 18: Refactoring Currency Detail Loading Skeleton
+* **Timestamp:** 2026-07-22 15:45
+* **Prompt:** "refactor loading in @currency_detail_screen.dart into /widgets/"
+* **Model Output:** *Extracted the loading skeleton from CurrencyDetailScreen into a new CurrencyDetailLoader widget in the presentation/widgets directory, simplifying the main screen logic.*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:** Enhanced code modularity and readability by isolating the skeleton UI into a standalone widget.
+* **Associated Commit:** `refactor(presentation): extract currency detail skeleton into CurrencyDetailLoader`
+

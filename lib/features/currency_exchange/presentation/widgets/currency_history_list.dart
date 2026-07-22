@@ -21,10 +21,7 @@ class CurrencyHistoryList extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.0),
           child: Text(
             'History',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
         Padding(
@@ -35,20 +32,21 @@ class CurrencyHistoryList extends StatelessWidget {
             itemCount: history.length,
             separatorBuilder: (context, index) => Divider(
               height: 1,
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withAlpha(30),
+              color: Theme.of(context).colorScheme.primary.withAlpha(30),
             ),
             itemBuilder: (context, index) {
               final item = history[index];
               return ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: Text(DateFormatter.formatString(item.date)),
+                title: Text(
+                  DateFormatter.formatString(item.date),
+                  style: const TextStyle(fontSize: 14),
+                ),
                 trailing: Text(
                   '${item.rates[currencyCode]?.toStringAsFixed(2)} EGP',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               );

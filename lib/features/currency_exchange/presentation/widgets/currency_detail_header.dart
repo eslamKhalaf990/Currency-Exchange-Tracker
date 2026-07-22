@@ -48,14 +48,14 @@ class CurrencyDetailHeader extends StatelessWidget {
                 Text(
                   currencyCode.toUpperCase(),
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Current Rate: ${currentRate.toStringAsFixed(2)} EGP',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 13,
                     color: Colors.grey[700],
                   ),
                 ),
