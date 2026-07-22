@@ -149,10 +149,18 @@
 * **Associated Commit:** `feat(presentation): implement animated curved LineChart skeleton for currency history`
 
 ### Entry 18: Refactoring Currency Detail Loading Skeleton
-* **Timestamp:** 2026-07-22 15:45
+* **Timestamp:** 2026-07-22 03:48
 * **Prompt:** "refactor loading in @currency_detail_screen.dart into /widgets/"
 * **Model Output:** *Extracted the loading skeleton from CurrencyDetailScreen into a new CurrencyDetailLoader widget in the presentation/widgets directory, simplifying the main screen logic.*
 * **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
 * **Reasoning:** Enhanced code modularity and readability by isolating the skeleton UI into a standalone widget.
 * **Associated Commit:** `refactor(presentation): extract currency detail skeleton into CurrencyDetailLoader`
+
+### Entry 19: Fixing Historical Rate Date Sync
+* **Timestamp:** 2026-07-22 03:52
+* **Prompt:** "i have this issue in getTodayAndYesterdayRates, getLastSevenDaysRates i am getting today's date and subtract one but what if the data not yet updated with today's date?"
+* **Model Output:** *Refactored CurrencyRemoteDataSourceImpl to fetch the latest rates first and use the API's returned date as the anchor for calculating all subsequent historical dates, rather than relying on the local device's DateTime.now().*
+* **Engineering Judgment (Accepted/Edited/Rejected):** **Accepted**.
+* **Reasoning:**  Eliminates race conditions and duplicate data entries caused by timezone mismatches or API delays. Relying on the server's latest date as a single source of truth ensures historical calculations remain perfectly sequential regardless of the client's local time.
+* **Associated Commit:** `fix(data): anchor historical currency rate calculations to API latest date`
 

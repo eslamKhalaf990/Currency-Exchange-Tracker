@@ -35,38 +35,45 @@ class CurrencyRemoteDataSourceImpl implements CurrencyRemoteDataSource {
       throw ServerException('Failed to load rates for $date');
     }
   }
-
   @override
   Future<List<CurrencyResponseModel>> getTodayAndYesterdayRates() async {
-    final today = DateTime.now().toUtc();
-    final yesterday = today.subtract(const Duration(days: 1));
-    
+    // 1. Fetch the latest rates FIRST
+    final latestRates = await getLatestRates();
+
+    // 2. Extract the actual date of the latest data.
+    // (Adjust 'latestRates.date' based on your actual model properties)
+    final apiLatestDate = DateTime.parse(latestRates.date);
+
+    // 3. Calculate yesterday based on the API's date, not the device's date
+    final yesterday = apiLatestDate.subtract(const Duration(days: 1));
     final yesterdayDateStr = yesterday.toIso8601String().split('T')[0];
 
-    // Fetching today's (latest) and yesterday's rates concurrently
-    final results = await Future.wait([
-      getLatestRates(),
-      getHistoricalRates(yesterdayDateStr),
-    ]);
+    // 4. Fetch yesterday's rates
+    final yesterdayRates = await getHistoricalRates(yesterdayDateStr);
 
-    return results;
+    return [latestRates, yesterdayRates];
   }
 
   @override
   Future<List<CurrencyResponseModel>> getLastSevenDaysRates() async {
-    final List<Future<CurrencyResponseModel>> futures = [];
-    final today = DateTime.now().toUtc();
+    // 1. Fetch latest first to get the anchor date
+    final latestRates = await getLatestRates();
+    final apiLatestDate = DateTime.parse(latestRates.date);
 
-    for (int i = 0; i < 7; i++) {
-      final date = today.subtract(Duration(days: i));
-      final dateStr = date.toIso8601String().split('T')[0];
-      if (i == 0) {
-        futures.add(getLatestRates());
-      } else {
-        futures.add(getHistoricalRates(dateStr));
-      }
+    final List<Future<CurrencyResponseModel>> futures = [];
+
+    // We already have the latest rates (day 0), so add it directly as a completed Future
+    futures.add(Future.value(latestRates));
+
+    // 2. Loop for the remaining 6 days, calculating backwards from the API's latest date
+    for (int i = 1; i < 7; i++) {
+      final pastDate = apiLatestDate.subtract(Duration(days: i));
+      final dateStr = pastDate.toIso8601String().split('T')[0];
+
+      futures.add(getHistoricalRates(dateStr));
     }
 
+    // 3. Wait for the remaining 6 API calls concurrently
     return await Future.wait(futures);
   }
 }
