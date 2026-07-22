@@ -22,7 +22,9 @@ class CurrencyExchangePage extends StatelessWidget {
       body: BlocListener<ConnectivityBloc, ConnectivityState>(
         listenWhen: (previous, current) =>
             previous is ConnectivityOffline && current is ConnectivityOnline,
-        listener: (context, state) {},
+        listener: (context, state) {
+          context.read<RatesListBloc>().add(GetRatesListEvent());
+        },
         child: Column(
           children: [
             BlocBuilder<ConnectivityBloc, ConnectivityState>(
