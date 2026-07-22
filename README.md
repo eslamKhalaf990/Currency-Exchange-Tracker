@@ -1,49 +1,90 @@
 # Currency Exchange Tracker
 
-A production-ready Flutter application that displays live exchange rates for 5 major currencies against the Egyptian Pound (EGP), featuring detailed historical charts and robust offline capabilities[cite: 1].
+A production-ready Flutter application that displays live exchange rates for 5 major currencies against the Egyptian Pound (EGP), featuring detailed historical charts and robust offline capabilities.
 
 ## Core Features
 
-### Module 1: Exchange Rates List
-* Tracks 5 key currency pairs: USD/EGP, EUR/EGP, GBP/EGP, SAR/EGP, JPY/EGP.
-* Calculates daily fluctuations by fetching current and previous day rates.
-* Displays the exchange rate (Foreign Currency to EGP) and the absolute/percentage daily change.
-* Uses strict color-coding: Green for EGP strengthening, Red for EGP weakening.
-* Includes pull-to-refresh functionality alongside comprehensive loading, error, and empty states.
+### 1. Exchange Rates List
+* **Currencies Tracked:** USD, EUR, GBP, SAR, and JPY against the Egyptian Pound (EGP).
+* **Live Analytics:** Calculates daily fluctuations by comparing current and previous day rates.
+* **Visual Indicators:** Uses strict financial color-coding (Green for EGP strengthening, Red for EGP weakening).
+* **Interactive UI:** Supports pull-to-refresh and handles all states (loading, error, and empty).
 
-### Module 2: Currency Detail & Historical Chart
-* Dedicated view for each currency displaying current rates and absolute/percentage changes.
-* Displays the date of the last update universally formatted as `dd mm yyyy`.
-* Renders a 7-day historical line chart using extracted data points from the API.
-* Implements a custom shimmer effect (no spinners) during chart data fetching.
-* Graceful error handling with user-friendly fallback messaging.
+### 2. Currency Detail & Historical Insights
+* **Detailed View:** Displays current rates, absolute change, and percentage change.
+* **Historical Charts:** Renders a 7-day historical line chart using `fl_chart`.
+* **Smart Loading:** Implements custom shimmer effects for a premium feel during data fetching.
+* **Formatted Data:** Dates are universally formatted as `dd MMM yyyy`.
 
-### Module 3: Offline Cache & Resilience
-* Persistent local caching layer for the most recently fetched rates.
-* Serves cached data seamlessly during offline scenarios with a clear "last updated" indicator.
-* Automatically refreshes and hydrates data when internet connectivity is restored.
+### 3. Offline Resilience
+* **Local Caching:** Uses `shared_preferences` to cache the most recently fetched rates.
+* **Seamless Transition:** Serves cached data during offline scenarios with a "last updated" indicator.
+* **Auto-Sync:** Automatically refreshes data when internet connectivity is restored.
 
-### Architecture & Technical Stack
+---
 
-* **Structure:** Feature-First Clean Architecture to ensure absolute separation of concerns between Domain, Data, and Presentation layers.
-* **State Management:** Domain-driven BLoC / Cubit patterns for predictable UI state transitions.
-* **Dependency Injection:** Centralized service locator utilizing GetIt.
-* **API Logic:** Performs inline mathematical inversion ($1 \div \text{rate}$) to convert the API's base EGP rates into the required UI display format.
+## Tech Stack & Packages
 
-### UI/UX Design System
+### Architecture
+* **Clean Architecture:** Feature-first approach separating Domain, Data, and Presentation layers.
+* **State Management:** `flutter_bloc` (Cubit) for predictable state transitions.
+* **Dependency Injection:** `get_it` for service location.
 
-* **Aesthetic:** An ultra-minimalist, high-contrast monochrome layout utilizing solid black, pure white, and targeted grey tones. No colored accents are used outside of the required green/red financial indicators.
-* **Motion:** Incorporates continuous, looping scale transitions managed by explicit animation controllers to provide a fluid, premium feel to interactive components.
+### Key Packages
+* **Networking:** `dio` for API requests and interceptions.
+* **Functional Programming:** `dartz` for handling successes and failures (Either).
+* **Charts:** `fl_chart` for historical data visualization.
+* **UI Effects:** `shimmer` for loading states.
+* **Connectivity:** `internet_connection_checker_plus` for real-time network monitoring.
+* **Utilities:** `equatable`, `intl`, `shared_preferences`.
 
-### API Reference
+---
+
+## Development Environment
+
+To ensure consistency, the project was developed using the following environment:
+
+* **IDE:** Android Studio Panda 3 | 2025.3.3 Patch 1
+* **Flutter SDK:** `v3.41.9`
+* **Dart SDK:** `v3.11.5`
+* **Gradle:** `8.14`
+* **Android Gradle Plugin (AGP):** `8.11.1`
+* **Kotlin:** `2.2.20`
+
+---
+
+## Getting Started
+
+### Prerequisites
+1. Install [Flutter SDK](https://docs.flutter.dev/get-started/install).
+2. Ensure you have a valid Android/iOS development environment.
+
+### Installation & Setup
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/currency_exchange_tracker.git
+   cd currency_exchange_tracker
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Run the app:**
+   ```bash
+   flutter run
+   ```
+
+---
+
+## API Reference
 
 This project integrates a free, open-source currency exchange API:
 * **Base Currency:** Strictly configured to `egp.json`.
-* **Postman Collection:** Postman collection exported to `documents/Currency Exchange Tracker (EGP Base).postman_collection.json`.
-* **Latest Rates:** `https://latest.currency-api.pages.dev/v1/currencies/egp.json`.
-* **Historical Rates:** `https://{YYYY-MM-DD}.currency-api.pages.dev/v1/currencies/egp.json`.
+* **Latest Rates:** `https://latest.currency-api.pages.dev/v1/currencies/egp.json`
+* **Historical Rates:** `https://{YYYY-MM-DD}.currency-api.pages.dev/v1/currencies/egp.json`
+* **Documentation:** A Postman collection is available in `documents/`.
 
-### Deliverables
-
-1. **Source Code:** Full repository with incremental, descriptive commit history.
-2. **AI Usage Log:** An `AI_USAGE.md` file located at the repository root detailing end-to-end AI prompt usage, model outputs, and engineering judgments.
+## Deliverables
+* **AI Usage Log:** See `AI_USAGE.md` for details on the development process.
